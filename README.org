@@ -1,0 +1,6 @@
+#+title: Implementation of Baalrud's two ion species sheath criterion
+
+
+* References
+
+  POP11: Baalrud & Hegna, Physics of Plasmas, 2011
