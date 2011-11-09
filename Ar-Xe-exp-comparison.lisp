@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-06 23:42:25 Ar-Xe-exp-comparison.lisp>
+;; Time-stamp: <2011-11-08 15:55:59 Ar-Xe-exp-comparison.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 (in-package :2iss)
 
 (defun sample-calc ()
-  (let* ((n1 1e-1)
+  (let* ((n1 0.9e-1)
 	 (n2 (- 1 n1)))
     (format t "n1: ~15t~5,3f~%" n1)
     (format t "n2: ~15t~5,3f~%" n2)

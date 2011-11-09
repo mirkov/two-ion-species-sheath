@@ -1,0 +1,75 @@
+\documentclass[12pt]{article}%
+\usepackage{chicago}
+\usepackage{graphicx}
+\usepackage{amsmath}%
+\setcounter{MaxMatrixCols}{30}%
+\usepackage{amsfonts}%
+\usepackage{amssymb}
+%TCIDATA{OutputFilter=latex2.dll}
+%TCIDATA{Version=5.50.0.2960}
+%TCIDATA{CSTFile=article.cst}
+%TCIDATA{Created=Wednesday, November 09, 2011 08:00:08}
+%TCIDATA{LastRevised=Wednesday, November 09, 2011 08:16:38}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=BibTeX}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="TTCA shells\TTCA-BriefReport">}
+%BeginMSIPreambleData
+\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+%EndMSIPreambleData
+\begin{document}
+
+\title{Title}
+\author{Author}
+\maketitle
+
+\section{Converting the quartic equation for the ion Bohm velocity into a
+fourth order polynomial}
+
+Baalrud (55)%
+\begin{equation}
+\frac{n_{1}}{n_{e}}\frac{c_{s1}^{2}}{V_{1}^{2}}+\frac{n_{2}}{n_{e}}%
+\frac{c_{s2}^{2}}{\left(  V_{1}-\Delta\right)  ^{2}}=1
+\end{equation}
+Multiply by $V_{1}^{2}$ and $\left(  V_{1}-\Delta V\right)  ^{2}$%
+\begin{equation}
+\frac{n_{1}}{n_{e}}c_{s1}^{2}\left(  V_{1}-\Delta\right)  ^{2}+\frac{n_{2}%
+}{n_{e}}c_{s2}^{2}V_{1}^{2}=\left(  V_{1}-\Delta\right)  ^{2}V_{1}^{2}%
+\end{equation}
+Rearrange%
+\begin{equation}
+\left(  V_{1}-\Delta\right)  ^{2}V_{1}^{2}-\frac{n_{1}}{n_{e}}c_{s1}%
+^{2}\left(  V_{1}-\Delta\right)  ^{2}-\frac{n_{2}}{n_{e}}c_{s2}^{2}V_{1}^{2}=0
+\end{equation}
+Expand%
+\begin{equation}
+\left(  V_{1}^{2}-2\Delta V_{1}+\Delta^{2}\right)  V_{1}^{2}-\frac{n_{1}%
+}{n_{e}}c_{s1}^{2}\left(  V_{1}^{2}-2\Delta V_{1}+\Delta^{2}\right)
+-\frac{n_{2}}{n_{e}}c_{s2}^{2}V_{1}^{2}=0
+\end{equation}
+
+
+Collect%
+\begin{equation}
+V_{1}^{4}-2\Delta V_{1}^{3}+\left(  \Delta^{2}-\frac{n_{1}}{n_{e}}c_{s1}%
+^{2}-\frac{n_{2}}{n_{e}}c_{s2}^{2}\right)  V_{1}^{2}+2\Delta\frac{n_{1}}%
+{n_{e}}c_{s1}^{2}V_{1}-\frac{n_{1}}{n_{e}}c_{s1}^{2}\Delta^{2}=0
+\end{equation}
+From the definition of the system sound speed%
+\begin{equation}
+c_{s}^{2}=\frac{n_{1}}{n_{e}}c_{s1}^{2}+\frac{n_{2}}{n_{e}}c_{s2}^{2}%
+\end{equation}
+we get%
+\begin{equation}
+V_{1}^{4}-2\Delta V_{1}^{3}+\left(  \Delta^{2}-c_{s}^{2}\right)  V_{1}%
+^{2}+2\Delta\frac{n_{1}}{n_{e}}c_{s1}^{2}V_{1}-\frac{n_{1}}{n_{e}}c_{s1}%
+^{2}\Delta^{2}=0
+\end{equation}
+
+
+\bibliographystyle{CHICAGO}
+\bibliography{CommonAbbrevs,JournalNameAbbrevs}
+
+
+
+\end{document}

@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-06 20:40:55 delta-vc-calcs.lisp>
+;; Time-stamp: <2011-11-08 16:35:35 delta-vc-calcs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
 
 (in-package :2ISS)
 
-(defun V1/2 (n1 n2 M1 M2 Te Ti &key kinetic (approx t) trace)
+(defun V1/2 (n1 n2 M1 M2 Te Ti &key (kinetic t) approx trace)
   "Calculate sheath velocities for the two species"
   (when trace
     (format t "n1: ~15t~5,3f~%" n1)

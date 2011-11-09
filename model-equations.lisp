@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-05 12:46:32 model-equations.lisp>
+;; Time-stamp: <2011-11-09 09:55:12 model-equations.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -84,6 +84,45 @@ POP11 (58)"
 	   (^2 (/ cs1 cs))
 	   Delta-Vc)))
 
+
+#|
+(map-grid :source #(-120 274 -225 85 -15 1.0) :destination-specification 
+		'((foreign-array 6) double-float))
+|#
+
+(defun solve-V1-poly (n1 n2 cs1 cs2 delta)
+  "Solve fourth order polynomial for species 1 Bohm Velocity"
+  (let ((ne (+ n1 n2)))
+    (let ((n1/ne (/ n1 ne))
+	  (cs1^2 (expt cs1 2))
+	  (Delta^2 (expt Delta 2)))
+      (let ((cs^2 (expt (cs n1 cs1 n2 cs2) 2)))
+	(let ((c0 (- (* n1/ne cs1^2 Delta^2)))
+	      (c1 (* 2d0 Delta n1/ne cs1^2))
+	      (c2 (- Delta^2 cs^2))
+	      (c3 (- (* 2d0 Delta)))
+	      (c4 1d0))
+	  (let ((coeffs (make-array 5 :initial-contents
+				    (list c0 c1 c2 c3 c4))))
+	    (let ((roots
+		   (coerce
+		    (grid:map-grid
+		     :source
+		     (gsll:polynomial-solve
+		      (grid:map-grid :source coeffs
+				     :destination-specification
+				     '((grid::foreign-array 5) double-float)))
+		     :destination-specification '((array 4) double-float))
+		    'list)))
+	      (assert (= 2 (count-if #'zerop roots :key #'imagpart))
+		      ()
+		      "Did not find two real roots ~a" roots)
+	      (realpart (find-if #'(lambda (root)
+				     (when (zerop (imagpart root))
+				       (< 0 (realpart root))))
+				 roots)))))))))
+	  
+
 (let (n1% n2% cs1% cs2% Delta-Vc%)
   (defun V1-equation% (V1%)
     "Quartic equation for V1
@@ -96,8 +135,9 @@ POP11 (55)"
 	  (/ (^2 cs2%)
 	     (^2 (- V1% Delta-Vc%))))
        -1d0))
-  (defun V1-exact (n1 n2 cs1 cs2 Delta-Vc &optional print-steps)
-    (setf n1% n1
+  (defun V1-exact (n1 n2 cs1 cs2 Delta-Vc);; &optional print-steps)
+    (solve-V1-Poly n1 n2 cs1 cs2 Delta-Vc)
+#|    (setf n1% n1
 	  n2% n2
 	  cs1% cs1
 	  cs2% cs2
@@ -124,4 +164,4 @@ POP11 (55)"
 		   iter lower upper
 		   root (- root (sqrt 5.0d0))
 		   (- upper lower)))
-	 finally (return root)))))
+	 finally (return root)))|#))
