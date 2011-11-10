@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-08 16:35:35 delta-vc-calcs.lisp>
+;; Time-stamp: <2011-11-09 16:54:40 delta-vc-calcs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -42,17 +42,19 @@
     (let ((Delta-V-proposed (if kinetic (Delta-Vc-kin n1 vt1 ti n2 vt2 ti)
 				(Delta-Vc-fluid alpha vt1 vt2))))
       (when trace
-	  (format t "Delta-V-proposed: ~15t~5,3e~%" Delta-V-proposed))
-      (let ((Delta-V (Delta-Vc cs1 cs2 Delta-V-proposed))
-	    (cs (cs n1 cs1 n2 cs2)))
-	(when trace
-	  (format t "Delta-V: ~15t~5,3e~%" Delta-V)
-	  (format t "cs: ~15t~5,3e~%" cs))
-	(let* ((V1 (if approx (V1-inst cs n1 n2 cs2 Delta-V)
-		       (V1-exact n1 n2 cs1 cs2 Delta-V)))
-	       (V2 (- V1 Delta-V)))
+	(format t "Delta-V-proposed: ~15t~5,3e~%" Delta-V-proposed))
+      (multiple-value-bind (Delta-V corrected-p)
+	  (Delta-Vc cs1 cs2 Delta-V-proposed)
+	(let ((cs (cs n1 cs1 n2 cs2)))
 	  (when trace
-	    (format t "V1: ~15t~5,3e~%" V1)
-	    (format t "V2: ~15t~5,3e~%" V2))
-	  (list V1 V2))))))
+	    (format t "Delta-V: ~15t~5,3e~%" Delta-V)
+	    (format t "cs: ~15t~5,3e~%" cs))
+	  (let* ((V1 (if approx (V1-inst cs n1 n2 cs2 Delta-V)
+			 (V1-exact n1 n2 cs1 cs2 Delta-V)))
+		 (V2 (- V1 Delta-V)))
+	    (when trace
+	      (format t "V1: ~15t~5,3e~%" V1)
+	      (format t "V2: ~15t~5,3e~%" V2))
+	    (values (list (/ V1 100)
+			  (/ V2 100)) corrected-p)))))))
 

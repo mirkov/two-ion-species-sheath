@@ -5,7 +5,8 @@
   :components ((:file "package")
                (:file "plasma-params")
 	       (:file "model-equations")
-	       (:file "Ar-Xe-exp-comparison"))
+	       (:file "Ar-Xe-exp-comparison")
+	       (:file "delta-vc-calcs"))
   :depends-on (#:lisp-unit
                #:alexandria
                :gsll

@@ -1,5 +1,6 @@
 #+title: Implementation of Baalrud's two ion species sheath criterion
 
+Calculate the ion Bohm velocity, in cm/sec !!!
 
 * References
 

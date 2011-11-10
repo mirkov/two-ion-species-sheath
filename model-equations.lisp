@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-09 09:55:12 model-equations.lisp>
+;; Time-stamp: <2011-11-10 09:47:19 model-equations.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -61,11 +61,15 @@ POP11 (53)"
 (defun Delta-Vc (cs1 cs2 Delta-Vc-proposed)
   "Actual Delta-Vc, depending on relative magnitude of the arguments
 
+In addition, return whether the Delta-Vc-proposed was accepted
+
 POP11 (54)"
-  (let ((Delta-cs (- cs1 cs2)))
-  (if (<= Delta-Vc-proposed (abs Delta-cs))
-      Delta-Vc-proposed
-      Delta-cs)))
+  (let* ((Delta-cs (- cs1 cs2))
+	 (test (<= Delta-Vc-proposed (abs Delta-cs))))
+    (values (if test
+		Delta-Vc-proposed
+		Delta-cs)
+	    test)))
 
 (defun V1-inst (cs n1 n2 cs2 Delta-Vc)
   "Sheath velocity of species 1, when instabilities are present
@@ -135,33 +139,5 @@ POP11 (55)"
 	  (/ (^2 cs2%)
 	     (^2 (- V1% Delta-Vc%))))
        -1d0))
-  (defun V1-exact (n1 n2 cs1 cs2 Delta-Vc);; &optional print-steps)
-    (solve-V1-Poly n1 n2 cs1 cs2 Delta-Vc)
-#|    (setf n1% n1
-	  n2% n2
-	  cs1% cs1
-	  cs2% cs2
-	  Delta-Vc% Delta-Vc)
-    (let* ((max-iter 50)
-	   (cs (cs n1 cs1 n2 cs2))
-	   (v1-approx (v1-inst cs n1 n2 cs2 Delta-Vc))
-	   (solver
-	    (make-one-dimensional-root-solver-f +brent-fsolver+
-						     'V1-equation% (* 0.1d0 v1-approx)
-						(* 10d0 v1-approx))))
-      (when print-steps
-	(format t "iter ~6t   [lower ~24tupper] ~36troot ~44terr ~54terr(est)~&"))
-      (loop for iter from 0
-	 for root = (solution solver)
-	 for lower = (fsolver-lower solver)
-	 for upper = (fsolver-upper solver)
-	 do (iterate solver)
-	 while  (and (< iter max-iter)
-		     (not (root-test-interval lower upper 0.0d0 0.001d0)))
-	 do
-	 (when print-steps
-	   (format t "~d~6t~10,6f~18t~10,6f~28t~12,9f ~44t~10,4g ~10,4g~&"
-		   iter lower upper
-		   root (- root (sqrt 5.0d0))
-		   (- upper lower)))
-	 finally (return root)))|#))
+  (defun V1-exact (n1 n2 cs1 cs2 Delta-Vc)
+    (solve-V1-Poly n1 n2 cs1 cs2 Delta-Vc)))

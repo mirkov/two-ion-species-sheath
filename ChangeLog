@@ -1,0 +1,9 @@
+2011-11-10  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* model-equations.lisp (Delta-Vc): Added a boolean return value
+	(V1-exact): Uses polynomial root finder instead of brent root
+	finder
+	(solve-V1-poly): New function
+
+	* delta-vc-calcs.lisp (V1/2): Minor fix-ups
+

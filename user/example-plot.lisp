@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-08 16:04:33 example-plot.lisp>
+;; Time-stamp: <2011-11-09 16:49:46 example-plot.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -19,18 +19,18 @@
 
 (in-package :2issu)
 
-(defun POP11-Fig6 (&key (kinetic t) (approx nil))
-  (let* ((n1 (lseq 1e-3 0.999d0 51))
+(defun plot-vb-vs-XI-1 (M1 M2 Te Ti &key (kinetic t) (approx nil))
+  "Plot of Bohm velocities of species 1&2"
+  (let* ((n1 (lseq 1e-3 0.999d0 201))
 	 (n2 (gsmap #'(lambda (x) (- 1d0 x)) n1)))
-    (let ((M1 40)
-	  (M2 131.29)
-	  (Te 0.7)
-	  (Ti 0.04))
-      (grid-bind (V1 V2)
-	  (gpmap (V1/2 @!n1 @!n2 M1 M2 Te Ti :kinetic kinetic
-		       :approx approx) n1 n2)
-	(set-to ((xlabel "n_{Ar+}/n_e")
-		 (ylabel "m/s")
-		 (title "Ion flow speeds in an Ar+/Xe+ plasma (POP11, Fig6)"))
-	  (plot-xys n1 `((,V1)
-			 (,V2))))))))
+    (grid-bind (V1 V2)
+	(gpmap (V1/2 @!n1 @!n2 M1 M2 Te Ti :kinetic kinetic
+		     :approx approx) n1 n2)
+      (plot-xys n1 `((,V1)
+		     (,V2))))))
+
+(defun POP11-Fig6 ()
+  (set-to ((xlabel "n_{Ar+}/n_e")
+	   (ylabel "cm/s")
+	   (title "Ion flow speeds in an Ar+/Xe+ plasma (POP11, Fig6)"))
+    (plot-vb-vs-Xi-1 40 132.3 .7 .04)))
