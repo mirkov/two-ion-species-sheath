@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-10 09:47:19 model-equations.lisp>
+;; Time-stamp: <2011-12-18 21:52:19 model-equations.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -81,7 +81,7 @@ POP11 (58)"
 
 
 (defun V2-inst (cs n1 n2 cs1 Delta-Vc)
-  "Sheath velocity of species 1, when instabilities are present
+  "Sheath velocity of species 2, when instabilities are present
 
 POP11 (58)"
   (- cs (* (/ n1 (+ n1 n2))
@@ -94,8 +94,11 @@ POP11 (58)"
 		'((foreign-array 6) double-float))
 |#
 
-(defun solve-V1-poly (n1 n2 cs1 cs2 delta)
-  "Solve fourth order polynomial for species 1 Bohm Velocity"
+(defun V1-exact (n1 n2 cs1 cs2 delta)
+  "Solve fourth order polynomial for species 1 Bohm Velocity and
+return the single positive real root
+
+POP11 (55)"
   (let ((ne (+ n1 n2)))
     (let ((n1/ne (/ n1 ne))
 	  (cs1^2 (expt cs1 2))
@@ -106,38 +109,31 @@ POP11 (58)"
 	      (c2 (- Delta^2 cs^2))
 	      (c3 (- (* 2d0 Delta)))
 	      (c4 1d0))
-	  (let ((coeffs (make-array 5 :initial-contents
-				    (list c0 c1 c2 c3 c4))))
-	    (let ((roots
-		   (coerce
-		    (grid:map-grid
-		     :source
-		     (gsll:polynomial-solve
-		      (grid:map-grid :source coeffs
-				     :destination-specification
-				     '((grid::foreign-array 5) double-float)))
-		     :destination-specification '((array 4) double-float))
-		    'list)))
-	      (assert (= 2 (count-if #'zerop roots :key #'imagpart))
-		      ()
-		      "Did not find two real roots ~a" roots)
-	      (realpart (find-if #'(lambda (root)
-				     (when (zerop (imagpart root))
-				       (< 0 (realpart root))))
-				 roots)))))))))
+	  (let* ((coeffs
+		  (grid:make-grid
+		   '((grid:foreign-array 5) double-float)
+		   :initial-contents
+		   (mapcar #'(lambda (arg)
+			       (coerce arg 'double-float))
+			   (list c0 c1 c2 c3 c4))))
+		 (roots-foreign (gsll:polynomial-solve coeffs))
+		 (roots (coerce
+			 (copy roots-foreign :grid-type 'grid::array)
+			 'list))
+		 (real-roots
+		  (mapcar #'realpart
+			  (remove-if-not #'(lambda (root)
+					     (zerop (imagpart root)))
+					 roots))))
+	    (assert (= 2 (length real-roots)) ()
+		       "Did not find two real roots ~a" real-roots)
+	    (assert (= 1 (count-if #'(lambda (root)
+				       (> root 0)) real-roots))
+		    ()
+		    "Did not find exactly one positive real root, ~a" roots)
+	    (find-if #'(lambda (root)
+			 (> root 0))
+		     real-roots)))))))
 	  
 
-(let (n1% n2% cs1% cs2% Delta-Vc%)
-  (defun V1-equation% (V1%)
-    "Quartic equation for V1
-
-POP11 (55)"
-    (+ (* (/ n1% (+ n1% n2%))
-	  (/ (^2 cs1%)
-	     (^2 V1%)))
-       (* (/ n2% (+ n1% n2%))
-	  (/ (^2 cs2%)
-	     (^2 (- V1% Delta-Vc%))))
-       -1d0))
-  (defun V1-exact (n1 n2 cs1 cs2 Delta-Vc)
-    (solve-V1-Poly n1 n2 cs1 cs2 Delta-Vc)))
+#| (V1-EXACT '1.0E12 '1.0E12 '2681.102 '1475.8981 '457.4146) |#

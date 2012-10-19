@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-11-05 06:57:16 plasma-params.lisp>
+;; Time-stamp: <2011-11-19 22:53:26 plasma-params.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 
 (defun vti (Ti Mi)
   "Ion thermal velocity as function of temperature (eV) and mass (amu)
+in units of m/s
 
 NRL Plasma Formulary"
-  (* 9.79e5 (sqrt (/ Ti Mi))))
+  (* 9.79e3 (sqrt (/ Ti Mi))))

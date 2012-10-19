@@ -1,3 +1,27 @@
+2011-12-18  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* two-ion-species-sheath.asd (#:two-ion-species-sheath): Added
+	dependency on the `foreign-array' system
+
+2011-12-17  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* model-equations.lisp (solve-V1-poly): Cleaned up the code
+
+	* user/example-plot.lisp: Various changes
+
+	* plasma-params.lisp (vti): Changed to return thermal velocity in
+	m/s instead of cm/s
+
+	* delta-vc-calcs.lisp (V1/2): Refactoring and added new keywords
+	to lambda list: classic-p and normalize-p
+
+	* two-ion-species-sheath.asd (#:two-ion-species-sheath): Modified
+	system to reflect file name change
+
+	* package.lisp (): Renamed `package.lisp' to
+	`two-ion-species-sheath-package-def.lisp'
+	
+
 2011-11-10  Mirko Vukovic  <mirko.vukovic@us.tel.com>
 
 	* model-equations.lisp (Delta-Vc): Added a boolean return value
